@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 class Message extends Model
 {
@@ -34,4 +35,27 @@ class Message extends Model
         'updated_at',
         'deleted_at'
     ];
+
+    public static function getAll()
+    {
+        return DB::table('messages')->get();
+    }
+
+    public static function getMessagesByProjectId($project_id)
+    {
+        return DB::table('messages')->where('project_id', $project_id)->get();
+    }
+
+    public static function getMessagesByUserId($user_id)
+    {
+        return DB::table('messages')->where('sender_id', $user_id)->orWhere('receiver_id', $user_id)->get();
+    }
+
+
+    public static function storeMessage($data)
+    {
+        return DB::table('messages')->insert($data);
+    }
+
+
 }

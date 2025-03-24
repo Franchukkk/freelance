@@ -49,7 +49,25 @@ class Project extends Model
         return DB::table('projects')->where('id', $id)->first();
     }
 
-    public static function createProject($data) {
+    public static function storeProject($data) {
         return DB::table('projects')->insert($data);
+    }
+
+    public static function getCustomerProjects($id) {
+        return DB::table('projects')->where('client_id', $id)->get();
+    }
+
+    public static function setFreelancerAndChangeStatus($id, $freelancer_id) {
+        DB::table('projects')
+            ->where('id', $id)
+            ->update([
+                'freelancer_id' => $freelancer_id,
+                'status' => 'in progress',
+                'updated_at' => now()
+            ]);
+    }
+
+    public static function getFreelancerProjects($id) {
+        return DB::table('projects')->where('freelancer_id', $id)->get();
     }
 }

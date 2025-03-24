@@ -1,8 +1,9 @@
 <?php
 
 namespace App\Models;
-
+use App\Models\User;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 class Bid extends Model
 {
@@ -35,4 +36,18 @@ class Bid extends Model
         'updated_at',
         'deleted_at'
     ];
+
+    public static function storeBid ($data) {
+        return DB::table('bids')->insert($data);
+    }
+
+    public static function getBidsByProjectId ($id) {
+        $projects =  DB::table('bids')->where('project_id', $id)->get();
+
+        foreach ($projects as $project) {
+            $project->freelancer = User::getById($project->freelancer_id)->name . ' ' . User::getById($project->freelancer_id)->surname;
+        }
+
+        return $projects;
+    }
 }

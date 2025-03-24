@@ -12,9 +12,32 @@
 
                 <!-- Navigation Links -->
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                    @if (auth()->user()->role === 'freelancer')
+                    <x-nav-link :href="route('site.index')" :active="request()->routeIs('site.index')">
+                        {{ __('Tasks') }}
+                    </x-nav-link>
+                    <x-nav-link :href="route('acceptedBids')" :active="request()->routeIs('acceptedBids')">
+                        {{ __('Accepted Tasks') }}
+                    </x-nav-link>
+                    @endif
                     <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                         {{ __('Dashboard') }}
                     </x-nav-link>
+                    <x-nav-link :href="route('profile.index')" :active="request()->routeIs('profile.index')">
+                        {{ __('Profile') }}
+                    </x-nav-link>
+                    @if (auth()->user()->role === 'customer')
+                    <x-nav-link :href="route('project.create')" :active="request()->routeIs('project.create')">
+                        {{ __('Create Project') }}
+                    </x-nav-link>
+                    <x-nav-link :href="route('customerProjects')" :active="request()->routeIs('customerProjects')">
+                        {{ __('My Projects') }}
+                    </x-nav-link>
+                    @endif
+                    <x-nav-link :href="route('showChats', auth()->id())" :active="request()->routeIs('showChats')">
+                        {{ __('Chats') }}
+                    </x-nav-link>
+
                 </div>
             </div>
 
