@@ -6,7 +6,7 @@
     </x-slot>
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 dark:text-gray-100">
-            @foreach ($sortedChats->toArray() as $project_id => $chat)
+            @foreach ($chats as $project_id => $chat)
                 <div style="border: 1px solid #ccc; padding: 10px; margin-bottom: 20px;">
                     <p>Project: {{ $chat["project_title"] }}</p>
                     @if (auth()->user()->role == "freelancer")

@@ -3,7 +3,6 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\DB;
 
 class Project extends Model
 {
@@ -29,10 +28,11 @@ class Project extends Model
     protected $fillable = [
         'client_id',
         'title',
+        'freelancer_id',
         'category',
         'description',
         'budget_min',
-        'budget_min',
+        'budget_max',
         'deadline',
         'status',
         'created_at',
@@ -41,25 +41,21 @@ class Project extends Model
     ];
 
 
-    public static function getAll() {
-        return DB::table('projects')->get();
-    }
-
-    public static function getById($id) {
-        return DB::table('projects')->where('id', $id)->first();
-    }
-
     public static function storeProject($data) {
-        return DB::table('projects')->insert($data);
+        return Project::create($data);;
+    }
+
+    public static function editProject($data) {
+        Project::where('id', $data['id'])
+            ->update($data);
     }
 
     public static function getCustomerProjects($id) {
-        return DB::table('projects')->where('client_id', $id)->get();
+        return Project::where('client_id', $id)->get();
     }
 
     public static function setFreelancerAndChangeStatus($id, $freelancer_id) {
-        DB::table('projects')
-            ->where('id', $id)
+        Project::where('id', $id)
             ->update([
                 'freelancer_id' => $freelancer_id,
                 'status' => 'in progress',
@@ -68,6 +64,14 @@ class Project extends Model
     }
 
     public static function getFreelancerProjects($id) {
-        return DB::table('projects')->where('freelancer_id', $id)->get();
+        return Project::where('freelancer_id', $id)->get();
+    }
+
+    public static function closeProject($id) {
+        Project::where('id', $id)
+            ->update([
+                'status' => 'completed',
+                'updated_at' => now()
+            ]);
     }
 }

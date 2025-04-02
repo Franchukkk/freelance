@@ -10,8 +10,10 @@
             @foreach ($projects as $project)
                 <figure style="border: 1px solid #ccc; padding: 10px; margin-bottom: 20px;">
                     <figcaption>
-                        @if ($project->freelancer_id != NULL)
+                        @if ($project->freelancer_id != NULL && $project->status != "completed")
                             <h2 style="color: gold">{{ $project->status }}</h2>
+                        @elseif ($project->status == "completed")
+                            <h2 style="color: green">{{ $project->status }}</h2>
                         @endif
                         <p>Created at: {{ $project->created_at }}</p>
                         <p>Status: {{ $project->status }}</p>
@@ -26,6 +28,10 @@
                             <input type="hidden" name="project_id" value="{{ $project->id }}">
                             <input type="hidden" name="client_id" value="{{ $project->client_id }}">
                             <input type="submit" value="Chat with customer">
+                        </form>
+                        <form action="">
+                            @csrf
+                            <button type="submit">Leave a comment about clien</button>
                         </form>
                         <!-- <a href="{{ route('showChat', [$project->id, $project->client_id]) }}" class="text-blue-500 hover:text-blue-700">Chat with customer</a> -->
                     </figcaption>

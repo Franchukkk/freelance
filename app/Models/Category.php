@@ -3,7 +3,6 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\DB;
 
 class Category extends Model
 {
@@ -32,11 +31,4 @@ class Category extends Model
         'updated_at',
         'deleted_at'
     ];
-
-
-    public static function getAll() {
-        return DB::table(table: 'categories')
-            ->select('category')
-            ->get();
-        }
 }

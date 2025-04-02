@@ -14,7 +14,7 @@ class SiteController extends Controller
      * */
     public function index()
     {
-        $projects = Project::getAll();
+        $projects = Project::get();
         return view('site/index', compact('projects'));
     }
 

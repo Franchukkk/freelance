@@ -50,14 +50,9 @@ class User extends Authenticatable
         ];
     }
 
-    public static function getAll()
-    {
-        return DB::table('users')->get();
-    }
-
     public static function getById($id)
     {
-        return DB::table('users')->where('id', $id)->first();
+        return User::where('id', $id)->first();
     }
 
 }
