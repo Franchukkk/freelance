@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Site;
 
 use App\Http\Controllers\Controller;
 use App\Models\Review;
+use App\Models\User;
+use App\Models\Project;
 use Illuminate\Http\Request;
 
 class ReviewController extends Controller
@@ -44,4 +46,17 @@ class ReviewController extends Controller
 
         return to_route('customerProjects');
     }
+
+    public function openFreelancerReview($id)
+    {
+        $user = User::getById($id);
+        $reviews = Review::where('recipient_id', $id)->get();
+        foreach ($reviews as $review) {
+            $review->reviewer = User::getById($review->reviewer_id)->name . ' ' . User::getById($review->reviewer_id)->surname;
+            $review->project = Project::find($review->project_id)->title;
+        }
+        
+        return view('site/review/view', compact('reviews', 'user'));
+    }
+
 }

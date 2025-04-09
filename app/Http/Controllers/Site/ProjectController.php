@@ -64,24 +64,22 @@ class ProjectController extends Controller
      */
     public function storeProject(Request $request)
     {
-        $data = [
-            'client_id' => auth()->id(),
-            'title' => $request->post("title"),
-            'category' => $request->post("category"),
-            'description' => $request->post("description"),
-            'budget_min' => $request->post("budget_min"),
-            'budget_max' => $request->post("budget_max"),
-            'deadline' => $request->post("deadline"),
-            'status' => 'open',
-        ];
+        $validated = $request->validate([
+            'title' => 'required|string|max:255',
+            'category' => 'required|string|max:255',
+            'description' => 'required|string',
+            'budget_min' => 'required|numeric',
+            'budget_max' => 'required|numeric',
+            'deadline' => 'required|numeric',
+        ]);
 
         if ($request->post("project_id") == null) {
-            Project::storeProject($data);
+            Project::storeProject($validated);
         } else {
-            $data['id'] = $request->post("project_id");
-            $data['freelancer_id'] = $request->post("freelancer_id");
-            $data['status'] = "in progress";
-            Project::editProject($data);
+            $validated['id'] = $request->post("project_id");
+            $validated['freelancer_id'] = $request->post("freelancer_id");
+            $validated['status'] = "in progress";
+            Project::editProject($validated);
         }
    
         return to_route('customerProjects');

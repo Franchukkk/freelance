@@ -28,11 +28,20 @@
                         <input type="hidden" name="project_id" value="{{ $project->id }}">
                         <input type="hidden" name="client_id" value="{{ $project->client_id }}">
                         <label for="bid_amount">Bid amount</label>
-                        <p><input type="text" name="bid_amount" id="bid_amount" required></p>
+                        <p><input type="text" name="bid_amount" id="bid_amount"></p>
+                        @error("bid_amount")
+                            <p style="color: red;">{{ $message }}</p>
+                        @enderror
                         <label for="message">Message</label>
                         <p><textarea name="message" id="message" cols="30" rows="10"></textarea></p>
+                        @error("message")
+                            <p style="color: red;">{{ $message }}</p>
+                        @enderror
                         <label for="deadline_time">Deadline</label>
-                        <p><input type="text" name="deadline_time" id="deadline_time" required></p>
+                        <p><input type="text" name="deadline_time" id="deadline_time"></p>
+                        @error("deadline_time")
+                            <p style="color: red;">{{ $message }}</p>
+                        @enderror
                         <input type="submit" value="Make bid">
                     </form>
                 @elseif (auth()->user()->role == 'customer' && $project->client_id == auth()->id())
@@ -64,6 +73,10 @@
                                     <input type="hidden" name="project_id" value="{{ $project->id }}">
                                     <input type="hidden" name="freelancer_id" value="{{ $bid->freelancer_id }}">
                                     <input type="submit" value="Accept bid and pay" style="background-color: green; color: white; padding: 5px 10px; border: none; border-radius: 5px; cursor: pointer;">
+                                </form>
+                                <form action="{{ route("review.open", $bid->freelancer_id) }}">
+                                    @csrf
+                                    <input type="submit" value="Reviews about freelancer">
                                 </form>
                             @endif
                         </figcaption>

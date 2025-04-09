@@ -3,9 +3,11 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Project extends Model
 {
+    use HasFactory;
     /**
      * The table associated with the model.
      *
@@ -35,9 +37,6 @@ class Project extends Model
         'budget_max',
         'deadline',
         'status',
-        'created_at',
-        'updated_at',
-        'deleted_at'
     ];
 
 

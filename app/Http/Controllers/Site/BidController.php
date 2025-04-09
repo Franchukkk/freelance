@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\View\View;
+use App\Http\Requests\BidRequest;
 
 class BidController extends Controller
 {
@@ -16,22 +17,14 @@ class BidController extends Controller
      * @param Request $request
      * @return RedirectResponse
      */
-    public function storeBid(Request $request)
+    public function storeBid(BidRequest $request)
     {
         $project_id = $request->post("project_id");
         $bids = Bid::getBidsByProjectId($project_id);
         $userHasBid = $bids->where('freelancer_id', auth()->user()->id)->isNotEmpty();
 
-        if (!$userHasBid) {
-            $data = [
-                'project_id' => $project_id,
-                'freelancer_id' => auth()->id(),
-                'bid_amount' => $request->post("bid_amount"),
-                'deadline_time' => $request->post("deadline_time"),
-                'message' => $request->post("message")
-            ];
-    
-            Bid::create($data);
+        if (!$userHasBid) {    
+            Bid::create($request->validated());
             $userHasBid = true;
         }
 

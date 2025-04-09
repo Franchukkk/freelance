@@ -7,6 +7,7 @@ use App\Http\Controllers\Site\ProjectController;
 use App\Http\Controllers\Site\BidController;
 use App\Http\Controllers\Site\ChatController;
 use App\Http\Controllers\Site\ReviewController;
+use App\Http\Controllers\Site\DisputeController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -67,7 +68,24 @@ Route::middleware('auth')->group(function () {
     Route::controller(ReviewController::class)->group(function () {
         Route::post('/leave-review', 'leaveReview')->name('review.create');
         Route::post('/store-review', 'storeReview')->name('review.store');
+        Route::get('/freelancer-reviews/{id}', 'openFreelancerReview')->name('review.open');
     });
+
+    // ReviewController
+    Route::controller(ReviewController::class)->group(function () {
+        Route::post('/leave-review', 'leaveReview')->name('review.create');
+        Route::post('/store-review', 'storeReview')->name('review.store');
+        Route::get('/freelancer-reviews/{id}', 'openFreelancerReview')->name('review.open');
+    });
+
+    //DisputesController
+    Route::controller(DisputeController::class)->group(function () {
+        Route::post('/create-dispute', 'createDispute')->name('dispute.create');
+        Route::post('/store-dispute', 'storeDispute')->name('dispute.store');
+    });
+
+    //AdminsController
+    
 
 });
 

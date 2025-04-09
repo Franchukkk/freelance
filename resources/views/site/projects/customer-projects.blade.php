@@ -31,6 +31,15 @@
                                 @csrf
                                 <button type="submit">Complete</button>
                             </form>
+                            @if ($project->freelancer_id != NULL)
+                                <form action="{{ route("dispute.create") }}" method="POST">
+                                    @csrf
+                                    <input type="hidden" name="project_id" value="{{ $project->id }}">
+                                    <input type="hidden" name="client_id" value="{{ $project->client_id }}">
+                                    <input type="hidden" name="freelancer_id" value="{{ $project->freelancer_id }}">
+                                    <input type="submit" value="Arbitrage">
+                                </form>
+                            @endif
                         @endif
                         <form action="{{ route("showChat") }}" method="POST">
                             @csrf
