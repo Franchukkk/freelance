@@ -5,9 +5,31 @@ namespace App\Http\Controllers\Site;
 use App\Http\Controllers\Controller;
 use App\Models\Dispute;
 use Illuminate\Http\Request;
+use App\Models\User;
+use App\Models\Project;
 
 class DisputeController extends Controller
 {
+
+    /**
+     * Display a listing of the disputes.
+     *
+     * @return \Illuminate\View\View
+     */
+
+    public function index()
+    {
+        $disputes = Dispute::where('complainant_id', auth()->id())
+            ->orWhere('respondent_id', auth()->id())
+            ->get();
+
+        foreach ($disputes as $dispute) {
+            $dispute->complainant = User::find($dispute->complainant_id);
+            $dispute->respondent = User::find($dispute->respondent_id);
+            $dispute->project = Project::find($dispute->project_id);
+        }
+        return view('site/dispute/index', compact('disputes'));
+    }
     
     /**
      * Display the dispute creation form.

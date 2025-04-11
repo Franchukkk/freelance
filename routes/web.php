@@ -8,7 +8,9 @@ use App\Http\Controllers\Site\BidController;
 use App\Http\Controllers\Site\ChatController;
 use App\Http\Controllers\Site\ReviewController;
 use App\Http\Controllers\Site\DisputeController;
+use App\Http\Controllers\admin\AdminController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Middleware\AdminMiddleware;
 
 Route::get('/', function () {
     return view('site/welcome');
@@ -82,12 +84,17 @@ Route::middleware('auth')->group(function () {
     Route::controller(DisputeController::class)->group(function () {
         Route::post('/create-dispute', 'createDispute')->name('dispute.create');
         Route::post('/store-dispute', 'storeDispute')->name('dispute.store');
+        Route::get('/disputes', 'index')->name('disputes');
     });
 
-    //AdminsController
-    
-
 });
+
+Route::middleware(['auth', AdminMiddleware::class])
+    ->prefix('admin')
+    ->group(function () {
+        Route::get('/', [AdminController::class, 'index'])->name('admin.dashboard');
+        Route::get('/disputes-resolve', [AdminController::class, 'disputes'])->name('admin.disputes');
+    });
 
 Route::get('/dashboard', function () {
     return view('site/dashboard');

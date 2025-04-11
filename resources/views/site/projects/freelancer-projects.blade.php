@@ -29,9 +29,18 @@
                             <input type="hidden" name="client_id" value="{{ $project->client_id }}">
                             <input type="submit" value="Chat with customer">
                         </form>
+                        @if ($project->freelancer_id != NULL && $project->status != "completed")
+                            <form action="{{ route("dispute.create") }}" method="POST">
+                                @csrf
+                                <input type="hidden" name="project_id" value="{{ $project->id }}">
+                                <input type="hidden" name="client_id" value="{{ $project->freelancer_id }}">
+                                <input type="hidden" name="freelancer_id" value="{{ $project->client_id }}">
+                                <input type="submit" value="Arbitrage">
+                            </form>
+                        @endif
                         <form action="">
                             @csrf
-                            <button type="submit">Leave a comment about clien</button>
+                            <button type="submit">Leave a comment about client</button>
                         </form>
                         <!-- <a href="{{ route('showChat', [$project->id, $project->client_id]) }}" class="text-blue-500 hover:text-blue-700">Chat with customer</a> -->
                     </figcaption>
