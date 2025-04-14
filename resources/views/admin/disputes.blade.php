@@ -12,7 +12,7 @@
                     <p>Respondent: {{$dispute->respondent->name . " " . $dispute->respondent->surname}}</p>
                     <p>Reason: {{ $dispute->reason }}</p>
                     <p>Status: {{ $dispute->status }}</p>
-                    <form action="" method="POST">
+                    <form action="{{ route("admin.resolveDispute", $dispute->id) }}" method="POST">
                         @csrf
                         <input type="hidden" name="dispute_id" value="{{ $dispute->id }}">
                         <label for="resolution">Resolution</label>

@@ -18,12 +18,26 @@ class AdminController extends Controller
 
     public function disputes()
     {
-        $disputes = Dispute::all();
+        $disputes = Dispute::where('status', 'pending')->get();
         foreach ($disputes as $dispute) {
             $dispute->complainant = User::find($dispute->complainant_id);
             $dispute->respondent = User::find($dispute->respondent_id);
             $dispute->project = Project::find($dispute->project_id);
         }
         return view('admin/disputes', compact('disputes'));
+    }
+
+    public function resolveDispute(Request $request)
+    {
+        $dispute = Dispute::find($request->post('dispute_id'));
+        $dispute->status = 'resolved';
+        $dispute->resolution = $request->post('resolution');
+        $dispute->save();
+
+        $project = Project::find($dispute->project_id);
+        $project->status = 'completed';
+        $project->save();
+
+        return $this->disputes();
     }
 }

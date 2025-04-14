@@ -94,6 +94,7 @@ Route::middleware(['auth', AdminMiddleware::class])
     ->group(function () {
         Route::get('/', [AdminController::class, 'index'])->name('admin.dashboard');
         Route::get('/disputes-resolve', [AdminController::class, 'disputes'])->name('admin.disputes');
+        Route::post('/dispute-resolve/{id}', [AdminController::class, 'resolveDispute'])->name('admin.resolveDispute');
     });
 
 Route::get('/dashboard', function () {

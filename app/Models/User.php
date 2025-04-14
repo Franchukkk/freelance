@@ -55,4 +55,8 @@ class User extends Authenticatable
         return User::where('id', $id)->first();
     }
 
+    public function disputes()
+    {
+        return $this->hasMany(Dispute::class, 'complainant_id');
+    }
 }

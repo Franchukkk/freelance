@@ -15,6 +15,7 @@ class UserController extends Controller
     public function index()
     {
         $user = auth()->user();
+        // dd($user->disputes);
         return view('site/user/profile', compact('user'));
     }
 }
