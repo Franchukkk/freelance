@@ -71,10 +71,16 @@ class ProjectController extends Controller
             'budget_min' => 'required|numeric',
             'budget_max' => 'required|numeric',
             'deadline' => 'required|numeric',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
+        
+        $validated['client_id'] = auth()->id();
+        $validated['status'] = "open";        
 
         if ($request->post("project_id") == null) {
-            Project::storeProject($validated);
+            $project = Project::storeProject($validated);
+            $project->addMedia($validated['image'])
+                ->toMediaCollection('images');
         } else {
             $validated['id'] = $request->post("project_id");
             $validated['freelancer_id'] = $request->post("freelancer_id");
@@ -93,7 +99,8 @@ class ProjectController extends Controller
      */
     public function showProject($id)
     {
-        $project = Project::find($id);
+        $project = Project::with(['media'])->find($id);
+        $project->image = $project->getFirstMediaUrl('images');
         $customer = User::getById($project->client_id);
         $bids = Bid::getBidsByProjectId($id);
         $userHasBid = $bids->where('freelancer_id', auth()->user()->id)->isNotEmpty();

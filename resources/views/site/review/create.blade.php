@@ -13,10 +13,20 @@
                 <input type="hidden" name="recipient_id" value="{{ $data["recipient_id"] }}">
                 <label for="rating">Rating</label>
                 <p><input type="number" name="rating" id="rating" required class="text-gray-900"></p>
+                @error("rating")
+                    <div class="text-red-500 text-sm mt-2">
+                        {{ $message }}
+                    </div>
+                @enderror
                 <label for="comment">Comment</label>
                 <p>
                     <textarea name="comment" id="comment" cols="30" rows="10" class="text-gray-900"></textarea>
                 </p>
+                @error("comment")
+                    <div class="text-red-500 text-sm mt-2">
+                        {{ $message }}
+                    </div>
+                @enderror
                 <input type="submit" value="Leave comment">
             </form>
         </div>

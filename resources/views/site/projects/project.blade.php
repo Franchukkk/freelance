@@ -9,6 +9,9 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 dark:text-gray-100">
             <figure style="border: 1px solid #ccc; padding: 10px; margin-bottom: 20px;">
                 <figcaption>
+                    @if ($project->getMedia('images')->isNotEmpty())
+                        <img src="{{ $project->image }}" alt="Project Image" style="width: 100%; height: auto;">
+                    @endif
                     <p>Customer: {{ $customer ->name . " " . $customer ->surname }}</p>
                     <p>Created at: {{ $project->created_at }}</p>
                     <p>Status: {{ $project->status }}</p>
@@ -28,17 +31,17 @@
                         <input type="hidden" name="project_id" value="{{ $project->id }}">
                         <input type="hidden" name="client_id" value="{{ $project->client_id }}">
                         <label for="bid_amount">Bid amount</label>
-                        <p><input type="text" name="bid_amount" id="bid_amount"></p>
+                        <p><input type="text" name="bid_amount" id="bid_amount" style="color: black;"></p>
                         @error("bid_amount")
                             <p style="color: red;">{{ $message }}</p>
                         @enderror
                         <label for="message">Message</label>
-                        <p><textarea name="message" id="message" cols="30" rows="10"></textarea></p>
+                        <p><textarea name="message" id="message" cols="30" rows="10" style="color: black;"></textarea></p>
                         @error("message")
                             <p style="color: red;">{{ $message }}</p>
                         @enderror
                         <label for="deadline_time">Deadline</label>
-                        <p><input type="text" name="deadline_time" id="deadline_time"></p>
+                        <p><input type="text" name="deadline_time" id="deadline_time" style="color: black;"></p>
                         @error("deadline_time")
                             <p style="color: red;">{{ $message }}</p>
                         @enderror
@@ -52,15 +55,13 @@
                     <p style="color: red;">You have already placed a bid for this project.</p>
                 @endif
             </div>
-
             <div>
                 <h2>Bids</h2>
                 @if ($bids->isNotEmpty())
                 @foreach ( $bids as $bid )
                     <figure style="border: 1px solid #ccc; padding: 10px; margin-bottom: 20px;">
                         <figcaption>
-                            
-                            <p>{{ $bid->freelancer }}</p>
+                            <a href="../freelancer-reviews/{{ $bid->freelancer_id }}">{{ $bid->freelancer }}</a>
                             <p>{{ $bid->created_at }}</p>
                             <p>Bid amount: {{ $bid->bid_amount }}</p>
                             <p>Term: {{ $bid->deadline_time }} days</p>

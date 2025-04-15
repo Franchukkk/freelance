@@ -7,6 +7,7 @@ use App\Models\Dispute;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Project;
+use App\Http\Requests\DisputeRequest;
 
 class DisputeController extends Controller
 {
@@ -42,7 +43,7 @@ class DisputeController extends Controller
         $data = [
             'project_id' => $request->post("project_id")
         ];
-        
+
         if (auth()->user()->role === 'client') {
             $data['respondent_id'] = $request->post("freelancer_id");
         } else {
@@ -57,7 +58,7 @@ class DisputeController extends Controller
      * @param Request $request The HTTP request containing dispute data
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function storeDispute(Request $request)
+    public function storeDispute(DisputeRequest $request)
     {
         $data = [
             'project_id' => $request->post("project_id"),

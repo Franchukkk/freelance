@@ -11,7 +11,12 @@
                 <input type="hidden" name="project_id" value="{{ $data["project_id"] }}">
                 <input type="hidden" name="respondent_id" value="{{ $data["respondent_id"] }}">
                 <p><label for="reason">Reason:</label></p>
-                <textarea name="reason" id="" cols="30" rows="10"></textarea>
+                @error("reason")
+                    <div class="text-red-500 text-sm mt-2">
+                        {{ $message }}
+                    </div>
+                @enderror
+                <textarea class="text-black" name="reason" id="" cols="30" rows="10"></textarea>
                 <input type="submit" value="Create dispute">
             </form>
         </div>

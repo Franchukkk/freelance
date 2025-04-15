@@ -16,10 +16,6 @@ Route::get('/', function () {
     return view('site/welcome');
 });
 
-Route::get('/index', function () {
-    return view('index');
-});
-
 Route::middleware('auth')->group(function () {
 
     // SiteController

@@ -7,8 +7,9 @@
 
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 dark:text-gray-100">
-            <form action="{{ route("project.store")  }}" method="POST">
+            <form action="{{ route("project.store")  }}" method="POST" enctype="multipart/form-data">
                 @csrf
+                <input type="file" name="image" id="image">
                 <label for="title">Назва</label>
                 <p><input type="text" name="title" id="title" required class="text-black"></p>
                 <label for="category">Категорія</label>

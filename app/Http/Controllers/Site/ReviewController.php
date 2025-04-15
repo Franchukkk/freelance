@@ -7,6 +7,7 @@ use App\Models\Review;
 use App\Models\User;
 use App\Models\Project;
 use Illuminate\Http\Request;
+use App\Http\Requests\ReviewRequest;
 
 class ReviewController extends Controller
 {
@@ -33,7 +34,7 @@ class ReviewController extends Controller
      * @param Request $request The HTTP request containing review data
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function storeReview(Request $request)
+    public function storeReview(ReviewRequest $request)
     {
         $data = [
             'project_id' => $request->post("project_id"),

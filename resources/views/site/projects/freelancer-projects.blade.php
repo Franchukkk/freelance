@@ -22,7 +22,9 @@
                         <p>{{ $project->description }}</p>
                         <p>Budget: from {{ $project->budget_min}}  to {{ $project->budget_max}}</p>
                         <p>Term: {{ $project->deadline }}</p>
+                        @if ($project->status != "completed")
                         <p>Time remain: {{ \Carbon\Carbon::parse($project->updated_at)->addDays($project->deadline)->diffForHumans() }}</p>
+                        @endif
                         <form action="{{ route("showChat") }}" method="POST">
                             @csrf
                             <input type="hidden" name="project_id" value="{{ $project->id }}">
@@ -33,15 +35,11 @@
                             <form action="{{ route("dispute.create") }}" method="POST">
                                 @csrf
                                 <input type="hidden" name="project_id" value="{{ $project->id }}">
-                                <input type="hidden" name="client_id" value="{{ $project->freelancer_id }}">
-                                <input type="hidden" name="freelancer_id" value="{{ $project->client_id }}">
+                                <input type="hidden" name="client_id" value="{{ $project->client_id }}">
+                                <input type="hidden" name="freelancer_id" value="{{ $project->freelancer_id }}">
                                 <input type="submit" value="Arbitrage">
                             </form>
                         @endif
-                        <form action="">
-                            @csrf
-                            <button type="submit">Leave a comment about client</button>
-                        </form>
                         <!-- <a href="{{ route('showChat', [$project->id, $project->client_id]) }}" class="text-blue-500 hover:text-blue-700">Chat with customer</a> -->
                     </figcaption>
                 </figure>

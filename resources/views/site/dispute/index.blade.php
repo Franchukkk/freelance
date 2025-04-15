@@ -12,7 +12,9 @@
                     <p>Complainant: {{$dispute->complainant->name . " " . $dispute->complainant->surname}}</p>
                     <p>Respondent: {{$dispute->respondent->name . " " . $dispute->respondent->surname}}</p>
                     <p>Reason: {{ $dispute->reason }}</p>
+                    <p>Result: {{ $dispute->resolution }}</p>
                     <p>Status: {{ $dispute->status }}</p>
+                    <p>Created at: {{ $dispute->created_at }}</p>
                 </div>
             @endforeach
         </div>

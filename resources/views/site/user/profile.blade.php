@@ -13,6 +13,7 @@
                 <p>Registered at: {{ $user->created_at }}</p>
                 <p>User id: {{ $user->id }}</p>
                 <p>Role: {{ $user->role }}</p>
+                <a href="../freelancer-reviews/{{ $user->id }}">Reviews about me</a>
             </div>
         </div>
     </div>
