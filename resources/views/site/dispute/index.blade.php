@@ -15,6 +15,14 @@
                     <p>Result: {{ $dispute->resolution }}</p>
                     <p>Status: {{ $dispute->status }}</p>
                     <p>Created at: {{ $dispute->created_at }}</p>
+                    @if (Auth::check() && Auth::user()->id == $dispute->complainant_id)
+                        <form action="{{ route("dispute.delete", $dispute->id) }}" method="POST">
+                            @csrf
+                            <input type="hidden" name="dispute_id" value="{{ $dispute->id }}">
+                            <input type="submit" value="Delete" class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded">
+                        </form>
+                    
+                    @endif
                 </div>
             @endforeach
         </div>

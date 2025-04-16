@@ -23,13 +23,13 @@
                         <p>Budget: from {{ $project->budget_min}}  to {{ $project->budget_max}}</p>
                         <p>Term: {{ $project->deadline }}</p>
                         @if ($project->freelancer_id == NULL)
-                            <a href="edit-project/{{ $project->id }}">Edit Project</a><br>
-                            <a href="project/{{ $project->id }}">Choose freelancer</a>
+                            <a href="edit-project/{{ $project->id }}" style="background-color: #2196F3; color: white; padding: 8px 16px; border: none; border-radius: 4px; cursor: pointer; margin: 5px; text-decoration: none; display: inline-block;">Edit Project</a><br>
+                            <a href="project/{{ $project->id }}" style="background-color: #4CAF50; color: white; padding: 8px 16px; border: none; border-radius: 4px; cursor: pointer; margin: 5px; text-decoration: none; display: inline-block;">Choose freelancer</a>
                         @elseif ($project->status != "completed")
                             <p>Time remain: {{ \Carbon\Carbon::parse($project->updated_at)->addDays($project->deadline)->diffForHumans() }}</p>
                             <form action="{{ route('closeProject', $project->id) }}" method="POST">
                                 @csrf
-                                <button type="submit">Complete</button>
+                                <button type="submit" style="background-color: #4CAF50; color: white; padding: 8px 16px; border: none; border-radius: 4px; cursor: pointer; margin: 5px;">Complete</button>
                             </form>
                             @if ($project->freelancer_id != NULL)
                                 <form action="{{ route("dispute.create") }}" method="POST">
@@ -37,7 +37,7 @@
                                     <input type="hidden" name="project_id" value="{{ $project->id }}">
                                     <input type="hidden" name="client_id" value="{{ $project->client_id }}">
                                     <input type="hidden" name="freelancer_id" value="{{ $project->freelancer_id }}">
-                                    <input type="submit" value="Arbitrage">
+                                    <input type="submit" value="Arbitrage" style="background-color: #ff9800; color: white; padding: 8px 16px; border: none; border-radius: 4px; cursor: pointer; margin: 5px;">
                                 </form>
                             @endif
                         @endif
@@ -46,7 +46,7 @@
                             <input type="hidden" name="project_id" value="{{ $project->id }}">
                             <input type="hidden" name="client_id" value="{{ $project->client_id }}">
                             @if ($project->freelancer_id != NULL)
-                                <input type="submit" value="Chat with freelancer">
+                                <input type="submit" value="Chat with freelancer" style="background-color: #4CAF50; color: white; padding: 8px 16px; border: none; border-radius: 4px; cursor: pointer; margin: 5px;">
                             @endif
                         </form>
                         @if ($project->status == "completed")
@@ -54,9 +54,14 @@
                                 @csrf
                                 <input type="hidden" name="project_id" value="{{ $project->id }}">
                                 <input type="hidden" name="recipient_id" value="{{ $project->freelancer_id }}">
-                                <input type="submit" value="Leave a comment about freelancer">
+                                <input type="submit" value="Leave a comment about freelancer" style="background-color: #2196F3; color: white; padding: 8px 16px; border: none; border-radius: 4px; cursor: pointer; margin: 5px;">
                             </form>
-                        @endif
+                        @elseif ($project->status == "open")
+                            <form action="{{ route('project.delete', $project->id) }}" method="POST">
+                                @csrf
+                                <button type="submit" style="background-color: #f44336; color: white; padding: 8px 16px; border: none; border-radius: 4px; cursor: pointer; margin: 5px;">Delete project</button>
+                            </form>
+                        @endif                                            
                     </figcaption>
                 </figure>
                 

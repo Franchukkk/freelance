@@ -91,6 +91,18 @@ class ProjectController extends Controller
         return to_route('customerProjects');
     }
 
+    public function deleteProject($id)
+    {
+        $project = Project::find($id);
+        if ($project->client_id != auth()->user()->id) {
+            abort(403);
+        }
+        if ($project) {
+            $project->delete();
+        }
+        return to_route('customerProjects');
+    }
+
     /**
      * Display the specified project.
      *

@@ -73,4 +73,17 @@ class DisputeController extends Controller
         
         return to_route('customerProjects');
     }
+
+    public function deleteDispute(Request $request)
+    {
+        $dispute = Dispute::find($request->post("dispute_id"));
+        if ($dispute->complainant_id != auth()->user()->id) {
+            abort(403);
+        }
+        if ($dispute) {
+            $dispute->delete();
+        }
+
+        return to_route('disputes');
+    }
 }

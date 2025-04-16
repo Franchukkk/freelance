@@ -5,13 +5,13 @@
         </h2>
     </x-slot>
 
-
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 dark:text-gray-100">
             <form action="{{ route("project.update")  }}" method="POST">
                 @csrf
                 <input type="hidden" name="project_id" value="{{ $project->id }}">
                 <input type="hidden" name="freelancer_id" value="{{ $project->freelancer_id }}">
+                <input type="file" name="image" id="image">
                 <label for="title">Назва</label>
                 <p><input type="text" name="title" id="title" value="{{ $project->title }}" class="text-gray-900" required></p>
                 <label for="category">Категорія</label>

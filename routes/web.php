@@ -34,6 +34,7 @@ Route::middleware('auth')->group(function () {
         Route::post('/update-project', 'storeProject')->name('project.update');
         Route::post('/store-project', 'storeProject')->name('project.store');
         Route::post('/complete-project/{id}', 'closeProject')->name('closeProject');
+        Route::post('/delete-project/{id}', 'deleteProject')->name('project.delete');
     });
 
     // BidController
@@ -41,6 +42,7 @@ Route::middleware('auth')->group(function () {
         Route::post('/make-bid', 'storeBid')->name('makeBid');
         Route::get('/accept-bid', 'acceptBid')->name('acceptBid');
         Route::get('/accepted-bids', 'acceptedBids')->name('acceptedBids');
+        Route::post('/delete-bid', 'deleteBid')->name('deleteBid');
     });
 
     // ChatController
@@ -69,18 +71,12 @@ Route::middleware('auth')->group(function () {
         Route::get('/freelancer-reviews/{id}', 'openFreelancerReview')->name('review.open');
     });
 
-    // ReviewController
-    Route::controller(ReviewController::class)->group(function () {
-        Route::post('/leave-review', 'leaveReview')->name('review.create');
-        Route::post('/store-review', 'storeReview')->name('review.store');
-        Route::get('/freelancer-reviews/{id}', 'openFreelancerReview')->name('review.open');
-    });
-
     //DisputesController
     Route::controller(DisputeController::class)->group(function () {
         Route::post('/create-dispute', 'createDispute')->name('dispute.create');
         Route::post('/store-dispute', 'storeDispute')->name('dispute.store');
         Route::get('/disputes', 'index')->name('disputes');
+        Route::post('/delete-dispute', 'deleteDispute')->name('dispute.delete');
     });
 
 });

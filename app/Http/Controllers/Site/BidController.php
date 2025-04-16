@@ -23,12 +23,31 @@ class BidController extends Controller
         $bids = Bid::getBidsByProjectId($project_id);
         $userHasBid = $bids->where('freelancer_id', auth()->user()->id)->isNotEmpty();
 
-        if (!$userHasBid) {    
-            Bid::create($request->validated());
+        if (!$userHasBid) {
+            $data = $request->validated();
+            $data['project_id'] = $project_id;
+            $data['freelancer_id'] = auth()->user()->id;
+
+            Bid::create($data);
             $userHasBid = true;
         }
 
         return to_route('project', $project_id);
+    }
+
+
+    public function deleteBid(Request $request)
+    {
+        $bid = Bid::find($request->post("bid_id"));
+        if ($bid->freelancer_id != auth()->user()->id) {
+            abort(403);
+        }
+        $project_id = $request->post("project_id");
+        if ($bid) {
+            $bid->delete();
+        }
+
+        return to_route('project', $request->post("project_id"));
     }
 
     /**
