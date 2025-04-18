@@ -6,7 +6,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use Illuminate\Support\Facades\DB;
+use \Illuminate\Database\Eloquent\Relations\HasMany;
 
 class User extends Authenticatable
 {
@@ -50,11 +50,22 @@ class User extends Authenticatable
         ];
     }
 
+    /**
+     * Get user by ID
+     *
+     * @param int $id
+     * @return User|null
+     */
     public static function getById($id)
     {
         return User::where('id', $id)->first();
     }
 
+    /**
+     * Get user disputes
+     *
+     * @return HasMany
+     */
     public function disputes()
     {
         return $this->hasMany(Dispute::class, 'complainant_id');

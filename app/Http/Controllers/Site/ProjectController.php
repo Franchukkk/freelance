@@ -9,6 +9,7 @@ use App\Models\Category;
 use App\Models\Bid;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
+use Illuminate\Http\RedirectResponse;
 
 class ProjectController extends Controller
 {
@@ -91,6 +92,12 @@ class ProjectController extends Controller
         return to_route('customerProjects');
     }
 
+    /**
+     * Delete the specified project.
+     *
+     * @param  int  $id
+     * @return RedirectResponse
+     */
     public function deleteProject($id)
     {
         $project = Project::find($id);

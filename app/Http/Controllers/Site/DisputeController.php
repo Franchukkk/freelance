@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Project;
 use App\Http\Requests\DisputeRequest;
+use Illuminate\Http\RedirectResponse;
 
 class DisputeController extends Controller
 {
@@ -76,6 +77,12 @@ class DisputeController extends Controller
         return to_route('disputes');
     }
 
+    /**
+     * Delete a dispute.
+     *
+     * @param Request $request The HTTP request containing dispute ID
+     * @return RedirectResponse
+     */
     public function deleteDispute(Request $request)
     {
         $dispute = Dispute::find($request->post("dispute_id"));

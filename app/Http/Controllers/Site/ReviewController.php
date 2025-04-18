@@ -8,6 +8,7 @@ use App\Models\User;
 use App\Models\Project;
 use Illuminate\Http\Request;
 use App\Http\Requests\ReviewRequest;
+use \Illuminate\View\View;
 
 class ReviewController extends Controller
 {
@@ -48,6 +49,12 @@ class ReviewController extends Controller
         return to_route('customerProjects');
     }
 
+    /**
+     * Display reviews for a freelancer.
+     *
+     * @param int $id The ID of the freelancer
+     * @return View
+     */
     public function openFreelancerReview($id)
     {
         $user = User::getById($id);
@@ -62,6 +69,5 @@ class ReviewController extends Controller
 
         return view('site/review/view', compact('reviews', 'user'));
     }
-
 
 }
