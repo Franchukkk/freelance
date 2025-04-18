@@ -71,7 +71,7 @@ class DisputeController extends Controller
 
         Dispute::create($data);
         
-        return to_route('customerProjects');
+        return to_route('disputes');
     }
 
     public function deleteDispute(Request $request)

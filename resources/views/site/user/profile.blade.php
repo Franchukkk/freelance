@@ -13,7 +13,9 @@
                 <p>Registered at: {{ $user->created_at }}</p>
                 <p>User id: {{ $user->id }}</p>
                 <p>Role: {{ $user->role }}</p>
+                @if ($user->role == 'freelancer')
                 <a href="../freelancer-reviews/{{ $user->id }}">Reviews about me</a>
+                @endif
             </div>
         </div>
     </div>

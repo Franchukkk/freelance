@@ -15,7 +15,7 @@
                     <p>Result: {{ $dispute->resolution }}</p>
                     <p>Status: {{ $dispute->status }}</p>
                     <p>Created at: {{ $dispute->created_at }}</p>
-                    @if (Auth::check() && Auth::user()->id == $dispute->complainant_id)
+                    @if (Auth::check() && Auth::user()->id == $dispute->complainant_id && $dispute->status != "resolved")
                         <form action="{{ route("dispute.delete", $dispute->id) }}" method="POST">
                             @csrf
                             <input type="hidden" name="dispute_id" value="{{ $dispute->id }}">
