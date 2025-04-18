@@ -22,15 +22,17 @@ class DisputeController extends Controller
     {
         $disputes = Dispute::where('complainant_id', auth()->id())
             ->orWhere('respondent_id', auth()->id())
-            ->get();
-
+            ->paginate(1);
+    
         foreach ($disputes as $dispute) {
             $dispute->complainant = User::find($dispute->complainant_id);
             $dispute->respondent = User::find($dispute->respondent_id);
             $dispute->project = Project::find($dispute->project_id);
         }
+    
         return view('site/dispute/index', compact('disputes'));
     }
+     
     
     /**
      * Display the dispute creation form.

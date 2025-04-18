@@ -44,6 +44,9 @@
                     </figcaption>
                 </figure>
             @endforeach
+            <div class="mt-6">
+                {{ $projects->links() }}
+            </div>
         </div>
     </div>
 </x-app-layout>

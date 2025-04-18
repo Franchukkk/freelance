@@ -25,6 +25,9 @@
                     @endif
                 </div>
             @endforeach
+            <div class="mt-6">
+                {{ $disputes->links() }}
+            </div>
         </div>
     </div>
 </x-app-layout>

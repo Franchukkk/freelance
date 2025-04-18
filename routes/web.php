@@ -21,7 +21,6 @@ Route::middleware('auth')->group(function () {
     // SiteController
     Route::controller(SiteController::class)->group(function () {
         Route::get('/index', 'index')->name('site.index');
-        Route::get('/chats', 'chats')->name('chats');
     });
 
     // ProjectController

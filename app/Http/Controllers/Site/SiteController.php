@@ -51,9 +51,9 @@ class SiteController extends Controller
         }
 
         $query->whereNotIn('status', ['completed', 'closed', 'in progress']);
-        
-        $projects = $query->get();
+        $projects = $query->paginate(1)->withQueryString();
 
-        return view('site/index', compact('projects', 'categories'));
+        return view('site.index', compact('projects', 'categories'));
     }
+
 }

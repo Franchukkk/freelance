@@ -43,7 +43,7 @@
             @if ($projects->isEmpty())
             <p>No projects found.</p>
             @else
-            <p>Found {{ $projects->count() }} projects.</p>
+            <p>Found {{ $projects->total() }} projects.</p>
             @foreach ($projects as $project)
                 <figure style="border: 1px solid #ccc; padding: 10px; margin-bottom: 20px;">
                     <figcaption>
@@ -65,6 +65,9 @@
                 </figure>
             @endforeach
             @endif
+            <div class="mt-6">
+                {{ $projects->links() }}
+            </div>
         </div>
     </div>
 </x-app-layout>

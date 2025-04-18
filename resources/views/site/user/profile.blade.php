@@ -14,7 +14,7 @@
                 <p>User id: {{ $user->id }}</p>
                 <p>Role: {{ $user->role }}</p>
                 @if ($user->role == 'freelancer')
-                <a href="../freelancer-reviews/{{ $user->id }}">Reviews about me</a>
+                <a href="../freelancer-reviews/{{ $user->id }}" style="display: inline-block; padding: 8px 16px; background-color: #4F46E5; color: white; text-decoration: none; border-radius: 6px; font-weight: 500; transition: background-color 0.2s;">Reviews about me</a>
                 @endif
             </div>
         </div>

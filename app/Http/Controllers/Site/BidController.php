@@ -68,9 +68,14 @@ class BidController extends Controller
      *
      * @return View
      */
-    public function acceptedBids() 
+    public function acceptedBids(Request $request) 
     {
-        $projects = Project::getFreelancerProjects(auth()->id());
+        $projects = Project::where('freelancer_id', auth()->id())
+            ->latest()
+            ->paginate(2)
+            ->withQueryString();
+
         return view('site/projects/freelancer-projects', compact('projects'));
     }
+
 }

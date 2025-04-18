@@ -22,6 +22,10 @@
                     <p>Comment: {{ $review->comment }}</p>
                 </div>
             @endforeach
+            <div class="mt-6">
+                {{ $reviews->links() }}
+            </div>
+
         </div>
     </div>
 </x-app-layout>

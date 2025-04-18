@@ -124,10 +124,19 @@ class ProjectController extends Controller
      *
      * @return View
      */
-    public function customerProjects () {
-        $projects = Project::getCustomerProjects(auth()->id());
+    public function customerProjects()
+    {
+        $query = Project::where('client_id', auth()->id());
+
+        if (request('status')) {
+            $query->where('status', request('status'));
+        }
+
+        $projects = $query->latest()->paginate(2);
+
         return view('site/projects/customer-projects', compact('projects'));
     }
+
 
     /**
      * Close the specified project.

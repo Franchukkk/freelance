@@ -58,7 +58,7 @@ class Project extends Model implements HasMedia
     }
 
     public static function getCustomerProjects($id) {
-        return Project::where('client_id', $id)->get();
+        return Project::where('client_id', $id);
     }
 
     public static function setFreelancerAndChangeStatus($id, $freelancer_id) {

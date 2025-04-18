@@ -51,13 +51,17 @@ class ReviewController extends Controller
     public function openFreelancerReview($id)
     {
         $user = User::getById($id);
-        $reviews = Review::where('recipient_id', $id)->get();
+
+        $reviews = Review::where('recipient_id', $id)->paginate(1);
+
         foreach ($reviews as $review) {
-            $review->reviewer = User::getById($review->reviewer_id)->name . ' ' . User::getById($review->reviewer_id)->surname;
-            $review->project = Project::find($review->project_id)->title;
+            $reviewer = User::getById($review->reviewer_id);
+            $review->reviewer = $reviewer->name . ' ' . $reviewer->surname;
+            $review->project = Project::find($review->project_id)->title ?? 'Без назви';
         }
-        
+
         return view('site/review/view', compact('reviews', 'user'));
     }
+
 
 }
