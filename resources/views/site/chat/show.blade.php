@@ -18,7 +18,7 @@
                 @csrf
                 <input type="hidden" name="project_id" value="{{ $project_id }}">
                 <input type="hidden" name="receiver_id" value="{{ $client_id }}">
-                <input type="text" name="message" id="message" required>
+                <input type="text" name="message" id="message" required class="text-black">
                 <input type="submit" value="Send">
             </form>
         </div>

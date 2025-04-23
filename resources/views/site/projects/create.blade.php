@@ -10,6 +10,7 @@
             <form action="{{ route("project.store")  }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 <input type="file" name="image" id="image">
+                <br>
                 <label for="title">Назва</label>
                 <p><input type="text" name="title" id="title" required class="text-black"></p>
                 <label for="category">Категорія</label>

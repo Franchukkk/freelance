@@ -80,15 +80,27 @@ class ProjectController extends Controller
 
         if ($request->post("project_id") == null) {
             $project = Project::storeProject($validated);
-            $project->addMedia($validated['image'])
-                ->toMediaCollection('images');
+            if (isset($validated['image'])) {
+                $project->addMedia($validated['image'])
+                    ->toMediaCollection('images');
+
+                $validated['image'] = $project->getFirstMediaUrl('images');
+            }
         } else {
             $validated['id'] = $request->post("project_id");
             $validated['freelancer_id'] = $request->post("freelancer_id");
             $validated['status'] = "in progress";
+            
+            $project = Project::find($request->post("project_id"));
+            if (isset($validated['image'])) {
+                $project->clearMediaCollection('images');
+                $project->addMedia($validated['image'])
+                    ->toMediaCollection('images');
+                $validated['image'] = $project->getFirstMediaUrl('images');
+            }
+            
             Project::editProject($validated);
-        }
-   
+        }   
         return to_route('customerProjects');
     }
 

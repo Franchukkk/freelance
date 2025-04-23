@@ -63,11 +63,6 @@ class Project extends Model implements HasMedia
     public static function editProject($data) {
         $project = Project::where('id', $data['id'])->first();
         $project->update($data);
-
-        if (isset($data['image'])) {
-            $project->clearMediaCollection('projects');
-            $project->addMedia($data['image'])->toMediaCollection('projects');
-        }
     }
 
     /**
