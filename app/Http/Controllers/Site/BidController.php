@@ -58,7 +58,7 @@ class BidController extends Controller
      */
     public function acceptBid(Request $request)
     {
-        Project::setFreelancerAndChangeStatus($request->post("project_id"), $request->post("freelancer_id"));
+        Project::setFreelancerAndChangeStatus($request->get("project_id"), $request->get("freelancer_id"));
 
         return to_route('customerProjects', $request->post("project_id"));
     }

@@ -49,8 +49,9 @@ class ChatController extends Controller
     {
         $messages = Message::where('project_id', $request->post("project_id"))->get();
         $project_id = $request->post("project_id");
-        $client_id = $request->post("client_id");
-        return view('site/chat/show', compact('messages', 'project_id', 'client_id'));
+        $client_id = $request->post("client_id") ?? $request->all()['receiver_id'];
+        $freelancer_id = $request->post("freelancer_id");
+        return view('site/chat/show', compact('messages', 'project_id', 'client_id', 'freelancer_id'));
     }
 
     /**
@@ -68,6 +69,7 @@ class ChatController extends Controller
             'message' => $request->post("message"),
         ];
 
+        
         Message::create($data);
         return $this->showChat($request);
     }

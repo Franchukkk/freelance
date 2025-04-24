@@ -35,7 +35,7 @@
                             <a href="edit-project/{{ $project->id }}" style="background-color: #2196F3; color: white; padding: 8px 16px; border: none; border-radius: 4px; cursor: pointer; margin: 5px; text-decoration: none; display: inline-block;">Edit Project</a><br>
                             <a href="project/{{ $project->id }}" style="background-color: #4CAF50; color: white; padding: 8px 16px; border: none; border-radius: 4px; cursor: pointer; margin: 5px; text-decoration: none; display: inline-block;">Choose freelancer</a>
                         @elseif ($project->status != "completed")
-                            <p>Time remain: {{ \Carbon\Carbon::parse($project->updated_at)->addDays($project->deadline)->diffForHumans() }}</p>
+                            <p>Time remain: {{ \Carbon\Carbon::now()->diffForHumans(\Carbon\Carbon::parse($project->updated_at)->addDays($project->deadline), true) }} left</p>
                             <form action="{{ route('closeProject', $project->id) }}" method="POST">
                                 @csrf
                                 <button type="submit" style="background-color: #4CAF50; color: white; padding: 8px 16px; border: none; border-radius: 4px; cursor: pointer; margin: 5px;">Complete</button>
@@ -54,6 +54,7 @@
                             @csrf
                             <input type="hidden" name="project_id" value="{{ $project->id }}">
                             <input type="hidden" name="client_id" value="{{ $project->client_id }}">
+                            <input type="hidden" name="freelancer_id" value="{{ $project->freelancer_id }}">
                             @if ($project->freelancer_id != NULL)
                                 <input type="submit" value="Chat with freelancer" style="background-color: #4CAF50; color: white; padding: 8px 16px; border: none; border-radius: 4px; cursor: pointer; margin: 5px;">
                             @endif

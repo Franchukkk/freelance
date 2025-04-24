@@ -18,6 +18,7 @@
                             @csrf
                             <input type="hidden" name="project_id" value="{{ $project_id }}">
                             <input type="hidden" name="client_id" value="{{ $chat["customer"]->id }}">
+                            <input type="hidden" name="freelancer_id" value="{{ $chat["freelancer"]->id }}">
                             <input type="submit" value="{{ auth()->user()->role == "freelancer" ? "Chat with customer" : "Chat with freelancer" }}">
                         </form>
                 </div>

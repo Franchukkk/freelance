@@ -76,7 +76,7 @@ class ProjectController extends Controller
         ]);
         
         $validated['client_id'] = auth()->id();
-        $validated['status'] = "open";        
+        $validated['status'] = "open";  
 
         if ($request->post("project_id") == null) {
             $project = Project::storeProject($validated);
@@ -89,7 +89,8 @@ class ProjectController extends Controller
         } else {
             $validated['id'] = $request->post("project_id");
             $validated['freelancer_id'] = $request->post("freelancer_id");
-            $validated['status'] = "in progress";
+
+            // $validated['status'] = "in progress";
             
             $project = Project::find($request->post("project_id"));
             if (isset($validated['image'])) {
