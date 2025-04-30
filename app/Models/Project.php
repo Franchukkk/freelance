@@ -7,12 +7,13 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
-use \Illuminate\Database\Eloquent\Collection;
-
+use Illuminate\Database\Eloquent\Collection;
 
 class Project extends Model implements HasMedia
 {
-    use HasFactory, SoftDeletes, InteractsWithMedia;
+    use HasFactory;
+    use SoftDeletes;
+    use InteractsWithMedia;
     /**
      * The table associated with the model.
      *
@@ -50,8 +51,10 @@ class Project extends Model implements HasMedia
      * @param array $data
      * @return Project
      */
-    public static function storeProject($data) {
-        return Project::create($data);;
+    public static function storeProject($data)
+    {
+        return Project::create($data);
+        ;
     }
 
     /**
@@ -60,7 +63,8 @@ class Project extends Model implements HasMedia
      * @param array $data
      * @return void
      */
-    public static function editProject($data) {
+    public static function editProject($data)
+    {
         $project = Project::where('id', $data['id'])->first();
         $project->update($data);
     }
@@ -72,7 +76,8 @@ class Project extends Model implements HasMedia
      * @param int $freelancer_id
      * @return void
      */
-    public static function setFreelancerAndChangeStatus($id, $freelancer_id) {
+    public static function setFreelancerAndChangeStatus($id, $freelancer_id)
+    {
         Project::where('id', $id)
             ->update([
                 'freelancer_id' => $freelancer_id,
@@ -87,7 +92,8 @@ class Project extends Model implements HasMedia
      * @param int $id
      * @return Collection
      */
-    public static function getFreelancerProjects($id) {
+    public static function getFreelancerProjects($id)
+    {
         return Project::where('freelancer_id', $id)->get();
     }
 
@@ -97,7 +103,8 @@ class Project extends Model implements HasMedia
      * @param int $id
      * @return void
      */
-    public static function closeProject($id) {
+    public static function closeProject($id)
+    {
         Project::where('id', $id)
             ->update([
                 'status' => 'completed',

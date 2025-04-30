@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers\Site;
+
 use App\Models\Project;
 use App\Models\Category;
 use App\Http\Controllers\Controller;
@@ -8,8 +9,8 @@ use Illuminate\Http\Request;
 
 class SiteController extends Controller
 {
-    /**  
-     * Display the index view 
+    /**
+     * Display the index view
      * @return \Illuminate\Contracts\View\View
      * */
     public function index(Request $request)

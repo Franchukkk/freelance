@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers\Site;
+
 use App\Models\Message;
 use App\Models\Project;
 use App\Models\User;
@@ -69,7 +70,7 @@ class ChatController extends Controller
             'message' => $request->post("message"),
         ];
 
-        
+
         Message::create($data);
         return $this->showChat($request);
     }

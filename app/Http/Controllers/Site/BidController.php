@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers\Site;
+
 use App\Models\Bid;
 use App\Models\Project;
 use App\Http\Controllers\Controller;
@@ -68,7 +69,7 @@ class BidController extends Controller
      *
      * @return View
      */
-    public function acceptedBids(Request $request) 
+    public function acceptedBids(Request $request)
     {
         $projects = Project::where('freelancer_id', auth()->id())
             ->latest()

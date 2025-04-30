@@ -12,7 +12,6 @@ use Illuminate\Http\RedirectResponse;
 
 class DisputeController extends Controller
 {
-
     /**
      * Display a listing of the disputes.
      *
@@ -24,17 +23,17 @@ class DisputeController extends Controller
         $disputes = Dispute::where('complainant_id', auth()->id())
             ->orWhere('respondent_id', auth()->id())
             ->paginate(1);
-    
+
         foreach ($disputes as $dispute) {
             $dispute->complainant = User::find($dispute->complainant_id);
             $dispute->respondent = User::find($dispute->respondent_id);
             $dispute->project = Project::find($dispute->project_id);
         }
-    
+
         return view('site/dispute/index', compact('disputes'));
     }
-     
-    
+
+
     /**
      * Display the dispute creation form.
      *
@@ -52,7 +51,7 @@ class DisputeController extends Controller
         } else {
             $data['respondent_id'] = $request->post("client_id");
         }
-        
+
         return view('site/dispute/create', compact('data'));
     }
     /**
@@ -73,7 +72,7 @@ class DisputeController extends Controller
         ];
 
         Dispute::create($data);
-        
+
         return to_route('disputes');
     }
 

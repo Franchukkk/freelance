@@ -1,14 +1,15 @@
 <?php
 
 namespace App\Http\Controllers\Site;
+
 use App\Models\User;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
-    /**  
-     * Display the portfolio view 
+    /**
+     * Display the portfolio view
      * @return \Illuminate\Contracts\View\View
      * */
 

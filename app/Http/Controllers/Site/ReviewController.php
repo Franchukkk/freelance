@@ -8,11 +8,10 @@ use App\Models\User;
 use App\Models\Project;
 use Illuminate\Http\Request;
 use App\Http\Requests\ReviewRequest;
-use \Illuminate\View\View;
+use Illuminate\View\View;
 
 class ReviewController extends Controller
 {
-
     /**
      * Display the review creation form.
      *

@@ -21,15 +21,15 @@ class ProjectController extends Controller
     public function index()
     {
         $projects = Project::select(
-            "title", 
-            "category", 
-            "description", 
-            "status", 
-            "budget_min", 
-            "budget_max", 
-            "deadline", 
+            "title",
+            "category",
+            "description",
+            "status",
+            "budget_min",
+            "budget_max",
+            "deadline",
             "created_at"
-            )->get();
+        )->get();
         return view('site/index', compact('projects'));
     }
 
@@ -74,9 +74,9 @@ class ProjectController extends Controller
             'deadline' => 'required|numeric',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
-        
+
         $validated['client_id'] = auth()->id();
-        $validated['status'] = "open";  
+        $validated['status'] = "open";
 
         if ($request->post("project_id") == null) {
             $project = Project::storeProject($validated);
@@ -91,7 +91,7 @@ class ProjectController extends Controller
             $validated['freelancer_id'] = $request->post("freelancer_id");
 
             // $validated['status'] = "in progress";
-            
+
             $project = Project::find($request->post("project_id"));
             if (isset($validated['image'])) {
                 $project->clearMediaCollection('images');
@@ -99,9 +99,9 @@ class ProjectController extends Controller
                     ->toMediaCollection('images');
                 $validated['image'] = $project->getFirstMediaUrl('images');
             }
-            
+
             Project::editProject($validated);
-        }   
+        }
         return to_route('customerProjects');
     }
 

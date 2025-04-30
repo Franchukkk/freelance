@@ -1,9 +1,10 @@
 <?php
 
 namespace App\Models;
+
 use App\Models\User;
 use Illuminate\Database\Eloquent\Model;
-use \Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Collection;
 
 class Bid extends Model
 {
@@ -43,7 +44,8 @@ class Bid extends Model
      * @param int $id Project ID
      * @return Collection Collection of bids with freelancer names
      */
-    public static function getBidsByProjectId ($id) {
+    public static function getBidsByProjectId($id)
+    {
         $projects =  Bid::where('project_id', $id)->get();
 
         foreach ($projects as $project) {
