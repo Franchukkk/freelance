@@ -20,9 +20,14 @@ class ReviewController extends Controller
      */
     public function leaveReview(Request $request)
     {
+        $validated = $request->validate([
+            'project_id' => 'required|exists:projects,id',
+            'recipient_id' => 'required|exists:users,id'
+        ]);
+
         $data = [
-            'project_id' => $request->post("project_id"),
-            'recipient_id' => $request->post("recipient_id")
+            'project_id' => $validated['project_id'],
+            'recipient_id' => $validated['recipient_id']
         ];
 
         return view('site/review/create', compact('data'));
@@ -36,12 +41,14 @@ class ReviewController extends Controller
      */
     public function storeReview(ReviewRequest $request)
     {
+        $validated = $request->validated();
+
         $data = [
-            'project_id' => $request->post("project_id"),
+            'project_id' => $validated['project_id'],
             'reviewer_id' => auth()->id(),
-            'recipient_id' => $request->post("recipient_id"),
-            'comment' => $request->post("comment"),
-            'rating' => $request->post("rating"),
+            'recipient_id' => $validated['recipient_id'],
+            'comment' => $validated['comment'],
+            'rating' => $validated['rating'],
         ];
         Review::create($data);
 
@@ -56,14 +63,14 @@ class ReviewController extends Controller
      */
     public function openFreelancerReview($id)
     {
-        $user = User::getById($id);
+        $user = User::findOrFail($id);
 
         $reviews = Review::where('recipient_id', $id)->paginate(1);
 
         foreach ($reviews as $review) {
-            $reviewer = User::getById($review->reviewer_id);
+            $reviewer = User::findOrFail($review->reviewer_id);
             $review->reviewer = $reviewer->name . ' ' . $reviewer->surname;
-            $review->project = Project::find($review->project_id)->title ?? 'Без назви';
+            $review->project = Project::findOrFail($review->project_id)->title ?? 'Без назви';
         }
 
         return view('site/review/view', compact('reviews', 'user'));

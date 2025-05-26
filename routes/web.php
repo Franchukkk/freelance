@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\NovaPostController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Site\SiteController;
 use App\Http\Controllers\Site\UserController;
@@ -30,10 +31,10 @@ Route::middleware('auth')->group(function () {
         Route::get('/projects', 'index')->name('projects');
         Route::get('/create-project', 'createProject')->name('project.create');
         Route::get('/edit-project/{id}', 'editProject')->name('project.edit');
-        Route::post('/update-project', 'storeProject')->name('project.update');
+        Route::put('/update-project', 'storeProject')->name('project.update');
         Route::post('/store-project', 'storeProject')->name('project.store');
-        Route::post('/complete-project/{id}', 'closeProject')->name('closeProject');
-        Route::post('/delete-project/{id}', 'deleteProject')->name('project.delete');
+        Route::patch('/complete-project/{id}', 'closeProject')->name('closeProject');
+        Route::delete('/delete-project/{id}', 'deleteProject')->name('project.delete');
     });
 
     // BidController
@@ -41,7 +42,7 @@ Route::middleware('auth')->group(function () {
         Route::post('/make-bid', 'storeBid')->name('makeBid');
         Route::get('/accept-bid', 'acceptBid')->name('acceptBid');
         Route::get('/accepted-bids', 'acceptedBids')->name('acceptedBids');
-        Route::post('/delete-bid', 'deleteBid')->name('deleteBid');
+        Route::delete('/delete-bid', 'deleteBid')->name('deleteBid');
     });
 
     // ChatController
@@ -75,7 +76,7 @@ Route::middleware('auth')->group(function () {
         Route::post('/create-dispute', 'createDispute')->name('dispute.create');
         Route::post('/store-dispute', 'storeDispute')->name('dispute.store');
         Route::get('/disputes', 'index')->name('disputes');
-        Route::post('/delete-dispute', 'deleteDispute')->name('dispute.delete');
+        Route::delete('/delete-dispute', 'deleteDispute')->name('dispute.delete');
     });
 
 });
@@ -91,5 +92,7 @@ Route::middleware(['auth', AdminMiddleware::class])
 Route::get('/dashboard', function () {
     return view('site/dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
+
+Route::get('/np', [NovaPostController::class, 'saveCounterparty'])->name('getSettlements');
 
 require __DIR__.'/auth.php';

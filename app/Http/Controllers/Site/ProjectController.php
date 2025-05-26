@@ -52,7 +52,10 @@ class ProjectController extends Controller
      */
     public function editProject($id)
     {
-        $project = Project::find($id);
+        $project = Project::findOrFail($id);
+        if ($project->client_id != auth()->id()) {
+            abort(403);
+        }
         $categories = Category::select("category")->get();
         return view('site/projects/edit', compact('project', 'categories'));
     }
@@ -66,13 +69,15 @@ class ProjectController extends Controller
     public function storeProject(Request $request)
     {
         $validated = $request->validate([
-            'title' => 'required|string|max:255',
-            'category' => 'required|string|max:255',
-            'description' => 'required|string',
-            'budget_min' => 'required|numeric',
-            'budget_max' => 'required|numeric',
-            'deadline' => 'required|numeric',
+            'title' => 'required|string|max:255|min:3',
+            'category' => 'required|string|max:255|exists:categories,category',
+            'description' => 'required|string|min:10',
+            'budget_min' => 'required|numeric|min:1|lt:budget_max',
+            'budget_max' => 'required|numeric|gt:budget_min',
+            'deadline' => 'required|numeric|min:1',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'project_id' => 'nullable|exists:projects,id',
+            'freelancer_id' => 'nullable|exists:users,id'
         ]);
 
         $validated['client_id'] = auth()->id();
@@ -87,12 +92,14 @@ class ProjectController extends Controller
                 $validated['image'] = $project->getFirstMediaUrl('images');
             }
         } else {
+            $project = Project::findOrFail($request->post("project_id"));
+            if ($project->client_id != auth()->id()) {
+                abort(403);
+            }
+
             $validated['id'] = $request->post("project_id");
             $validated['freelancer_id'] = $request->post("freelancer_id");
 
-            // $validated['status'] = "in progress";
-
-            $project = Project::find($request->post("project_id"));
             if (isset($validated['image'])) {
                 $project->clearMediaCollection('images');
                 $project->addMedia($validated['image'])
@@ -113,13 +120,11 @@ class ProjectController extends Controller
      */
     public function deleteProject($id)
     {
-        $project = Project::find($id);
-        if ($project->client_id != auth()->user()->id) {
+        $project = Project::findOrFail($id);
+        if ($project->client_id != auth()->id()) {
             abort(403);
         }
-        if ($project) {
-            $project->delete();
-        }
+        $project->delete();
         return to_route('customerProjects');
     }
 
@@ -131,11 +136,11 @@ class ProjectController extends Controller
      */
     public function showProject($id)
     {
-        $project = Project::with(['media'])->find($id);
+        $project = Project::with(['media'])->findOrFail($id);
         $project->image = $project->getFirstMediaUrl('images');
-        $customer = User::getById($project->client_id);
+        $customer = User::findOrFail($project->client_id);
         $bids = Bid::getBidsByProjectId($id);
-        $userHasBid = $bids->where('freelancer_id', auth()->user()->id)->isNotEmpty();
+        $userHasBid = $bids->where('freelancer_id', auth()->id())->isNotEmpty();
         return view('site/projects/project', compact('project', 'customer', 'bids', 'userHasBid'));
     }
 
@@ -149,14 +154,15 @@ class ProjectController extends Controller
         $query = Project::where('client_id', auth()->id());
 
         if (request('status')) {
-            $query->where('status', request('status'));
+            $query->where('status', request()->validate([
+                'status' => 'required|string|in:open,in progress,closed'
+            ])['status']);
         }
 
         $projects = $query->latest()->paginate(2);
 
         return view('site/projects/customer-projects', compact('projects'));
     }
-
 
     /**
      * Close the specified project.
@@ -166,8 +172,11 @@ class ProjectController extends Controller
      */
     public function closeProject($id)
     {
+        $project = Project::findOrFail($id);
+        if ($project->client_id != auth()->id()) {
+            abort(403);
+        }
         Project::closeProject($id);
         return to_route('customerProjects');
     }
-
 }

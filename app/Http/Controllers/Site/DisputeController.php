@@ -25,9 +25,9 @@ class DisputeController extends Controller
             ->paginate(1);
 
         foreach ($disputes as $dispute) {
-            $dispute->complainant = User::find($dispute->complainant_id);
-            $dispute->respondent = User::find($dispute->respondent_id);
-            $dispute->project = Project::find($dispute->project_id);
+            $dispute->complainant = User::findOrFail($dispute->complainant_id);
+            $dispute->respondent = User::findOrFail($dispute->respondent_id);
+            $dispute->project = Project::findOrFail($dispute->project_id);
         }
 
         return view('site/dispute/index', compact('disputes'));
@@ -42,32 +42,39 @@ class DisputeController extends Controller
      */
     public function createDispute(Request $request)
     {
+        $validated = $request->validate([
+            'project_id' => 'required|exists:projects,id',
+            'freelancer_id' => 'required_if:role,client|exists:users,id',
+            'client_id' => 'required_if:role,freelancer|exists:users,id'
+        ]);
+
         $data = [
-            'project_id' => $request->post("project_id")
+            'project_id' => $validated['project_id']
         ];
 
         if (auth()->user()->role === 'client') {
-            $data['respondent_id'] = $request->post("freelancer_id");
+            $data['respondent_id'] = $validated['freelancer_id'];
         } else {
-            $data['respondent_id'] = $request->post("client_id");
+            $data['respondent_id'] = $validated['client_id'];
         }
 
         return view('site/dispute/create', compact('data'));
     }
+
     /**
      * Store a new dispute for a project.
      *
-     * @param Request $request The HTTP request containing dispute data
+     * @param DisputeRequest $request The HTTP request containing dispute data
      * @return \Illuminate\Http\RedirectResponse
      */
     public function storeDispute(DisputeRequest $request)
     {
         $data = [
-            'project_id' => $request->post("project_id"),
+            'project_id' => $request->validated('project_id'),
             'complainant_id' => auth()->id(),
-            'respondent_id' => $request->post("respondent_id"),
-            'description' => $request->post("description"),
-            'reason' => $request->post("reason"),
+            'respondent_id' => $request->validated('respondent_id'),
+            'description' => $request->validated('description'),
+            'reason' => $request->validated('reason'),
             'status' => 'pending',
         ];
 
@@ -84,13 +91,15 @@ class DisputeController extends Controller
      */
     public function deleteDispute(Request $request)
     {
-        $dispute = Dispute::find($request->post("dispute_id"));
-        if ($dispute->complainant_id != auth()->user()->id) {
-            abort(403);
-        }
-        if ($dispute) {
-            $dispute->delete();
-        }
+        $validated = $request->validate([
+            'dispute_id' => 'required|exists:disputes,id'
+        ]);
+
+        $dispute = Dispute::findOrFail($validated['dispute_id']);
+        
+        abort_if($dispute->complainant_id !== auth()->id(), 403);
+        
+        $dispute->delete();
 
         return to_route('disputes');
     }
