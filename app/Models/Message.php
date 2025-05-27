@@ -2,11 +2,13 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Collection;
 
 class Message extends Model
 {
+    use HasFactory;
     /**
      * The table associated with the model.
      *
@@ -45,5 +47,15 @@ class Message extends Model
     public static function getMessagesByUserId($user_id)
     {
         return Message::where('sender_id', $user_id)->orWhere('receiver_id', $user_id)->get();
+    }
+
+    public function sender()
+    {
+        return $this->belongsTo(User::class, 'sender_id');
+    }
+
+    public function receiver()
+    {
+        return $this->belongsTo(User::class, 'receiver_id');
     }
 }

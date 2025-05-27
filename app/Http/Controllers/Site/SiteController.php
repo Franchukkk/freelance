@@ -15,6 +15,12 @@ class SiteController extends Controller
      * */
     public function index(Request $request)
     {
+        $validated = $request->validate([
+            'category' => 'nullable|json',
+            'budget_min' => 'nullable|numeric|min:0',
+            'budget_max' => 'nullable|numeric|min:0|gte:budget_min',
+        ]);
+
         $filters = [];
         $categories = Category::get();
 
@@ -26,11 +32,11 @@ class SiteController extends Controller
         }
 
         if ($request->has('budget_min')) {
-            $filters['budget_min'] = $request->budget_min;
+            $filters['budget_min'] = $validated['budget_min'];
         }
 
         if ($request->has('budget_max')) {
-            $filters['budget_max'] = $request->budget_max;
+            $filters['budget_max'] = $validated['budget_max'];
         }
 
         $query = Project::query();

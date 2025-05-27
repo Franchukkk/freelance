@@ -9,6 +9,7 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 dark:text-gray-100">
             <form action="{{ route("project.update")  }}" enctype="multipart/form-data" method="POST">
                 @csrf
+                @method('PUT')
                 <input type="hidden" name="project_id" value="{{ $project->id }}">
                 <input type="hidden" name="freelancer_id" value="{{ $project->freelancer_id }}">
                 @if ($project->getMedia('images')->isNotEmpty())

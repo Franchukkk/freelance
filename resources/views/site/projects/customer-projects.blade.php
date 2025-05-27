@@ -38,6 +38,7 @@
                             <p>Time remain: {{ \Carbon\Carbon::now()->diffForHumans(\Carbon\Carbon::parse($project->updated_at)->addDays($project->deadline), true) }} left</p>
                             <form action="{{ route('closeProject', $project->id) }}" method="POST">
                                 @csrf
+                                @method('PATCH')
                                 <button type="submit" style="background-color: #4CAF50; color: white; padding: 8px 16px; border: none; border-radius: 4px; cursor: pointer; margin: 5px;">Complete</button>
                             </form>
                             @if ($project->freelancer_id != NULL)
@@ -69,6 +70,7 @@
                         @elseif ($project->status == "open")
                             <form action="{{ route('project.delete', $project->id) }}" method="POST">
                                 @csrf
+                                @method('DELETE')
                                 <button type="submit" style="background-color: #f44336; color: white; padding: 8px 16px; border: none; border-radius: 4px; cursor: pointer; margin: 5px;">Delete project</button>
                             </form>
                         @endif                                            

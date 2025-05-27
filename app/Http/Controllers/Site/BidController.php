@@ -39,16 +39,19 @@ class BidController extends Controller
 
     public function deleteBid(Request $request)
     {
-        $bid = Bid::find($request->post("bid_id"));
+        $validated = $request->validate([
+            'bid_id' => 'required|exists:bids,id',
+            'project_id' => 'required|exists:projects,id'
+        ]);
+
+        $bid = Bid::findOrFail($validated['bid_id']);
         if ($bid->freelancer_id != auth()->user()->id) {
             abort(403);
         }
-        $project_id = $request->post("project_id");
-        if ($bid) {
-            $bid->delete();
-        }
 
-        return to_route('project', $request->post("project_id"));
+        $bid->delete();
+
+        return to_route('project', $validated['project_id']);
     }
 
     /**
@@ -59,9 +62,14 @@ class BidController extends Controller
      */
     public function acceptBid(Request $request)
     {
-        Project::setFreelancerAndChangeStatus($request->get("project_id"), $request->get("freelancer_id"));
+        $validated = $request->validate([
+            'project_id' => 'required|exists:projects,id',
+            'freelancer_id' => 'required|exists:users,id'
+        ]);
 
-        return to_route('customerProjects', $request->post("project_id"));
+        Project::setFreelancerAndChangeStatus($validated['project_id'], $validated['freelancer_id']);
+
+        return to_route('customerProjects', $validated['project_id']);
     }
 
     /**

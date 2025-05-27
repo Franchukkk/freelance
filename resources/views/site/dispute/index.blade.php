@@ -18,6 +18,7 @@
                     @if (Auth::check() && Auth::user()->id == $dispute->complainant_id && $dispute->status != "resolved")
                         <form action="{{ route("dispute.delete", $dispute->id) }}" method="POST">
                             @csrf
+                            @method('DELETE')
                             <input type="hidden" name="dispute_id" value="{{ $dispute->id }}">
                             <input type="submit" value="Delete" class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded">
                         </form>

@@ -26,13 +26,13 @@ class ChatController extends Controller
         $messages = Message::getMessagesByUserId($user_id);
         $chats = [];
         foreach ($messages as $message) {
-            $project = Project::find($message->project_id);
+            $project = Project::findOrFail($message->project_id);
 
             if (!isset($chats[$message->project_id])) {
                 $chats[$message->project_id] = [
                     'project_title' => $project ? $project->title : 'Без назви',
-                    'customer' => User::getById($message->receiver_id),
-                    'freelancer' => User::getById($message->sender_id),
+                    'customer' => User::findOrFail($message->receiver_id),
+                    'freelancer' => User::findOrFail($message->sender_id),
                 ];
             }
         }
@@ -63,13 +63,18 @@ class ChatController extends Controller
      */
     public function storeMessage(Request $request)
     {
-        $data = [
-            'project_id' => $request->post("project_id"),
-            'sender_id' => auth()->id(),
-            'receiver_id' => $request->post("receiver_id"),
-            'message' => $request->post("message"),
-        ];
+        $validated = $request->validate([
+            'project_id' => 'required|exists:projects,id',
+            'receiver_id' => 'required|exists:users,id',
+            'message' => 'required|string|max:1000',
+        ]);
 
+        $data = [
+            'project_id' => $validated['project_id'],
+            'sender_id' => auth()->id(),
+            'receiver_id' => $validated['receiver_id'],
+            'message' => $validated['message'],
+        ];
 
         Message::create($data);
         return $this->showChat($request);

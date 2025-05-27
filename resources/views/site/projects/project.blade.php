@@ -69,6 +69,7 @@
                             @if ($bid->freelancer_id == auth()->id())
                                 <form action="{{ route('deleteBid') }}" method="POST">
                                     @csrf
+                                    @method('DELETE')
                                     <input type="hidden" name="project_id" value="{{ $project->id }}">
                                     <input type="hidden" name="bid_id" value="{{ $bid->id }}">
                                     <input type="submit" value="Delete bid" style="background-color: red; color: white; padding: 5px 10px; border: none; border-radius: 5px; cursor: pointer;">
