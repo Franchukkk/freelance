@@ -69,15 +69,13 @@ class ProjectController extends Controller
     public function storeProject(Request $request)
     {
         $validated = $request->validate([
-            'title' => 'required|string|max:255|min:3',
-            'category' => 'required|string|max:255|exists:categories,category',
-            'description' => 'required|string|min:10',
-            'budget_min' => 'required|numeric|min:1|lt:budget_max',
-            'budget_max' => 'required|numeric|gt:budget_min',
-            'deadline' => 'required|numeric|min:1',
+            'title' => 'required|string|max:255',
+            'category' => 'required|string|max:255',
+            'description' => 'required|string',
+            'budget_min' => 'required|numeric',
+            'budget_max' => 'required|numeric',
+            'deadline' => 'required|numeric',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-            'project_id' => 'nullable|exists:projects,id',
-            'freelancer_id' => 'nullable|exists:users,id'
         ]);
 
         $validated['client_id'] = auth()->id();
@@ -92,14 +90,12 @@ class ProjectController extends Controller
                 $validated['image'] = $project->getFirstMediaUrl('images');
             }
         } else {
-            $project = Project::findOrFail($request->post("project_id"));
-            if ($project->client_id != auth()->id()) {
-                abort(403);
-            }
-
             $validated['id'] = $request->post("project_id");
             $validated['freelancer_id'] = $request->post("freelancer_id");
 
+            // $validated['status'] = "in progress";
+
+            $project = Project::find($request->post("project_id"));
             if (isset($validated['image'])) {
                 $project->clearMediaCollection('images');
                 $project->addMedia($validated['image'])

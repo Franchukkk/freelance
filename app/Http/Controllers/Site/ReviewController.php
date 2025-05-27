@@ -41,14 +41,12 @@ class ReviewController extends Controller
      */
     public function storeReview(ReviewRequest $request)
     {
-        $validated = $request->validated();
-
         $data = [
-            'project_id' => $validated['project_id'],
+            'project_id' => $request->post("project_id"),
             'reviewer_id' => auth()->id(),
-            'recipient_id' => $validated['recipient_id'],
-            'comment' => $validated['comment'],
-            'rating' => $validated['rating'],
+            'recipient_id' => $request->post("recipient_id"),
+            'comment' => $request->post("comment"),
+            'rating' => $request->post("rating"),
         ];
         Review::create($data);
 

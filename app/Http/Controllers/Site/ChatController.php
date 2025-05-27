@@ -48,18 +48,10 @@ class ChatController extends Controller
      */
     public function showChat(Request $request)
     {
-        $validated = $request->validate([
-            'project_id' => 'required|exists:projects,id',
-            'client_id' => 'required|exists:users,id',
-            'freelancer_id' => 'required|exists:users,id',
-            'receiver_id' => 'sometimes|exists:users,id'
-        ]);
-
-        $messages = Message::where('project_id', $validated['project_id'])->get();
-        $project_id = $validated['project_id'];
-        $client_id = $validated['client_id'] ?? $validated['receiver_id'];
-        $freelancer_id = $validated['freelancer_id'];
-        
+        $messages = Message::where('project_id', $request->post("project_id"))->get();
+        $project_id = $request->post("project_id");
+        $client_id = $request->post("client_id") ?? $request->all()['receiver_id'];
+        $freelancer_id = $request->post("freelancer_id");
         return view('site/chat/show', compact('messages', 'project_id', 'client_id', 'freelancer_id'));
     }
 

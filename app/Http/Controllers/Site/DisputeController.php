@@ -70,11 +70,11 @@ class DisputeController extends Controller
     public function storeDispute(DisputeRequest $request)
     {
         $data = [
-            'project_id' => $request->validated('project_id'),
+            'project_id' => $request->post("project_id"),
             'complainant_id' => auth()->id(),
-            'respondent_id' => $request->validated('respondent_id'),
-            'description' => $request->validated('description'),
-            'reason' => $request->validated('reason'),
+            'respondent_id' => $request->post("respondent_id"),
+            'description' => $request->post("description"),
+            'reason' => $request->post("reason"),
             'status' => 'pending',
         ];
 
