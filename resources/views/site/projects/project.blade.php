@@ -96,5 +96,14 @@
                 @endif
             </div>
         </div>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            if (typeof window.dataLayer === 'undefined') {
+                window.dataLayer = [];
+            }
+            window.dataLayer.push(@json($projectGMT));
+            console.log(window.dataLayer);
+        });
+    </script>
     </div>
 </x-app-layout>

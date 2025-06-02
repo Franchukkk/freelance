@@ -20,5 +20,14 @@
                 <input type="submit" value="Create dispute">
             </form>
         </div>
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                if (typeof window.dataLayer === 'undefined') {
+                    window.dataLayer = [];
+                }
+                window.dataLayer.push(@json($data));
+                console.log(window.dataLayer);
+            });
+        </script>
     </div>
 </x-app-layout>

@@ -7,7 +7,7 @@
 
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 dark:text-gray-100">
-            <form method="GET" action="{{ route('customerProjects') }}" class="mb-6">
+            <!-- <form method="GET" action="{{ route('customerProjects') }}" class="mb-6">
                 <label for="status">Filter by status:</label>
                 <select name="status" id="status" onchange="this.form.submit()" class="ml-2 p-1 rounded border text-black">
                     <option value="">All</option>
@@ -15,7 +15,7 @@
                     <option value="in progress" {{ request('status') == 'in progress' ? 'selected' : '' }}>In Progress</option>
                     <option value="completed" {{ request('status') == 'completed' ? 'selected' : '' }}>Completed</option>
                 </select>
-            </form>
+            </form> -->
             @foreach ($projects as $project)
                 <figure style="border: 1px solid #ccc; padding: 10px; margin-bottom: 20px;">
                     <figcaption>

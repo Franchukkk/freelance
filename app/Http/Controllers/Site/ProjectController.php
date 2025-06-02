@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Site;
 
 use App\Http\Controllers\Controller;
+use App\Http\Services\GoogleTagManagerService;
 use App\Models\Project;
 use App\Models\User;
 use App\Models\Category;
@@ -13,6 +14,14 @@ use Illuminate\Http\RedirectResponse;
 
 class ProjectController extends Controller
 {
+
+    protected GoogleTagManagerService $service;
+
+    public function __construct(GoogleTagManagerService $service)
+    {
+        $this->service = $service;
+    }
+
     /**
      * Display a listing of the projects.
      *
@@ -137,7 +146,8 @@ class ProjectController extends Controller
         $customer = User::findOrFail($project->client_id);
         $bids = Bid::getBidsByProjectId($id);
         $userHasBid = $bids->where('freelancer_id', auth()->id())->isNotEmpty();
-        return view('site/projects/project', compact('project', 'customer', 'bids', 'userHasBid'));
+        $projectGMT = $this->service->viewTaskPage($project);
+        return view('site/projects/project', compact('project', 'customer', 'bids', 'userHasBid', 'projectGMT'));
     }
 
     /**

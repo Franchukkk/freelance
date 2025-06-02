@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Site;
 
 use App\Http\Controllers\Controller;
+use App\Http\Services\GoogleTagManagerService;
 use App\Models\Dispute;
 use Illuminate\Http\Request;
 use App\Models\User;
@@ -12,6 +13,11 @@ use Illuminate\Http\RedirectResponse;
 
 class DisputeController extends Controller
 {
+    protected GoogleTagManagerService $service;
+    public function __construct(GoogleTagManagerService $service)
+    {
+        $this->service = $service;
+    }
     /**
      * Display a listing of the disputes.
      *
@@ -48,17 +54,15 @@ class DisputeController extends Controller
             'client_id' => 'required_if:role,freelancer|exists:users,id'
         ]);
 
-        $data = [
-            'project_id' => $validated['project_id']
-        ];
+        $data = $this->service->createDisputePage([
+            'project_id' => $validated['project_id'],
+            'respondent_id' => auth()->user()->role === 'client' 
+                ? $validated['freelancer_id'] 
+                : $validated['client_id'],
+            'complainant_id' => auth()->id(),
+        ]);
 
-        if (auth()->user()->role === 'client') {
-            $data['respondent_id'] = $validated['freelancer_id'];
-        } else {
-            $data['respondent_id'] = $validated['client_id'];
-        }
-
-        return view('site/dispute/create', compact('data'));
+        return view('site/dispute/create', compact('data'));;
     }
 
     /**
